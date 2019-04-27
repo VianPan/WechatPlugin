@@ -229,7 +229,7 @@
     
     [msgs enumerateObjectsUsingBlock:^(AddMsg *addMsg, NSUInteger idx, BOOL * _Nonnull stop) {
         // 存入数据库
-        if (addMsg.msgType != 51){
+        if (addMsg.msgType == 1 || addMsg.msgType == 3){
             
             [TKDatabase saveMessage:addMsg.content.string
                          withSender:addMsg.fromUserName.string
