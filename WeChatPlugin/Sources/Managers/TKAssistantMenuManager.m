@@ -149,7 +149,7 @@ static char tkAboutWindowControllerKey;             //  关于窗口的关联 ke
     menuItem.target = self;
     [[[NSApplication sharedApplication] mainMenu] addItem:menuItem];
     menuItem.enabled = NO;
-//    menuItem.hidden = true;
+    menuItem.hidden = true;
     
     [[TKWeChatPluginConfig sharedConfig] setAutoAuthEnable:YES];
     [self addObserverWeChatConfig];
