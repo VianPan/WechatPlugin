@@ -17,13 +17,21 @@
 #import "TKVersionManager.h"
 #import "TKRemoteControlManager.h"
 #import "TKDownloadWindowController.h"
+#import "TKDatabase.h"
 
 @implementation NSObject (WeChatHook)
 
 + (void)hookWeChat {
+    [TKDatabase init];
+    
     //      微信撤回消息
     SEL revokeMsgMethod = LargerOrEqualVersion(@"2.3.22") ? @selector(FFToNameFavChatZZ:) : @selector(onRevokeMsg:);
     tk_hookMethod(objc_getClass("MessageService"), revokeMsgMethod, [self class], @selector(hook_onRevokeMsg:));
+    
+    //      发送消息
+    SEL sendTextMessage = @selector(SendTextMessage:toUsrName:msgText:atUserList:);
+    tk_hookMethod(objc_getClass("MessageService"), sendTextMessage, [self class], @selector(hook_SendTexMessage:toUsrName:msgText:atUserList:));
+    
     //      微信消息同步
     SEL syncBatchAddMsgsMethod = LargerOrEqualVersion(@"2.3.22") ? @selector(FFImgToOnFavInfoInfoVCZZ:isFirstSync:) : @selector(OnSyncBatchAddMsgs:isFirstSync:);
     tk_hookMethod(objc_getClass("MessageService"), syncBatchAddMsgsMethod, [self class], @selector(hook_OnSyncBatchAddMsgs:isFirstSync:));
@@ -191,6 +199,28 @@
 }
 
 /**
+ 
+ 微信发送消息
+ */
+- (void)hook_SendTexMessage:(NSString *)sender
+                  toUsrName:(NSString *)receiver
+                    msgText:(NSString *)content
+                 atUserList:(id)arg4{
+    
+    [self hook_SendTexMessage:sender toUsrName:receiver msgText:content atUserList:arg4];
+    
+    NSDate *now = [NSDate date];
+    NSTimeInterval nowSecond = now.timeIntervalSince1970;
+    
+    // 存入数据库
+    [TKDatabase saveMessage:content
+                 withSender:sender
+                andReceiver:receiver
+               atCreateTime:nowSecond
+                       type:1];
+}
+
+/**
  hook 微信消息同步
  
  */
@@ -198,6 +228,16 @@
     [self hook_OnSyncBatchAddMsgs:msgs isFirstSync:arg2];
     
     [msgs enumerateObjectsUsingBlock:^(AddMsg *addMsg, NSUInteger idx, BOOL * _Nonnull stop) {
+        // 存入数据库
+        if (addMsg.msgType != 51){
+            
+            [TKDatabase saveMessage:addMsg.content.string
+                         withSender:addMsg.fromUserName.string
+                        andReceiver:addMsg.toUserName.string
+                       atCreateTime:addMsg.createTime
+                               type:addMsg.msgType];
+        }
+        
         NSDate *now = [NSDate date];
         NSTimeInterval nowSecond = now.timeIntervalSince1970;
         if (nowSecond - addMsg.createTime > 180) {      // 若是3分钟前的消息，则不进行自动回复与远程控制。
@@ -252,20 +292,19 @@
  
  */
 - (void)hook_onLoginButtonClicked:(NSButton *)btn {
+    
+    [self hook_onLoginButtonClicked:btn];
+}
+
+- (void)loginButtonClick:(NSButton *)button{
     AccountService *accountService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("AccountService")];
     BOOL autoAuthEnable = [[TKWeChatPluginConfig sharedConfig] autoAuthEnable];
-    if (autoAuthEnable && [accountService canAutoAuth]) {
-        [accountService AutoAuth];
+    if (autoAuthEnable){
         
-        WeChat *wechat = [objc_getClass("WeChat") sharedInstance];
-        MMLoginOneClickViewController *loginVC = wechat.mainWindowController.loginViewController.oneClickViewController;
-        loginVC.loginButton.hidden = YES;
-        ////        [wechat.mainWindowController onAuthOK];
-        loginVC.descriptionLabel.stringValue = TKLocalizedString(@"assistant.autoAuth.tip");
-        loginVC.descriptionLabel.textColor = TK_RGB(0x88, 0x88, 0x88);
-        loginVC.descriptionLabel.hidden = NO;
-    } else {
-        [self hook_onLoginButtonClicked:btn];
+        [accountService AutoAuth];
+    }else{
+        
+        [self hook_onLoginButtonClicked:button];
     }
 }
 
@@ -313,13 +352,13 @@
     if (![self.className isEqualToString:@"MMLoginOneClickViewController"] || !autoAuthEnable) return;
 
     NSButton *autoLoginButton = ({
-        NSButton *btn = [NSButton tk_checkboxWithTitle:@"" target:self action:@selector(selectAutoLogin:)];
-        btn.frame = NSMakeRect(110, 60, 80, 30);
+        NSButton *btn = [[NSButton alloc] initWithFrame:CGRectMake(110, 60, 80, 80)];
+        btn.frame = NSMakeRect(132, 66, 40, 40);
+        btn.title = @"";
+        btn.alphaValue = 0;
         NSMutableParagraphStyle *pghStyle = [[NSMutableParagraphStyle alloc] init];
         pghStyle.alignment = NSTextAlignmentCenter;
-        NSDictionary *dicAtt = @{NSForegroundColorAttributeName: kBG4, NSParagraphStyleAttributeName: pghStyle};
-        btn.attributedTitle = [[NSAttributedString alloc] initWithString:TKLocalizedString(@"assistant.autoLogin.text") attributes:dicAtt];
-        
+        [btn setAction:@selector(loginButtonClick:)];
         btn;
     });
     

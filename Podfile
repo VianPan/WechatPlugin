@@ -3,4 +3,5 @@ inhibit_all_warnings!
 
 target 'WeChatPlugin' do
   pod 'GCDWebServer', '~> 3.4.2'
+  pod 'FMDB/SQLCipher'
 end
