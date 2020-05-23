@@ -87,6 +87,10 @@
 		52EA235920862D19008E6329 /* TKHTTPManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 52EA235720862D19008E6329 /* TKHTTPManager.h */; };
 		52EA235A20862D19008E6329 /* TKHTTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA235820862D19008E6329 /* TKHTTPManager.m */; };
 		581E98663A5F0E6327516AA8 /* libPods-WeChatPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F7A08DC0E3A0626801414D /* libPods-WeChatPlugin.a */; };
+		9261F4A922737960007CB370 /* Message.h in Headers */ = {isa = PBXBuildFile; fileRef = 9261F4A722737960007CB370 /* Message.h */; };
+		9261F4AA22737960007CB370 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 9261F4A822737960007CB370 /* Message.m */; };
+		9281303C227363DB00C2CDBF /* TKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9281303A227363DB00C2CDBF /* TKDatabase.h */; };
+		9281303D227363DB00C2CDBF /* TKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9281303B227363DB00C2CDBF /* TKDatabase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -183,6 +187,10 @@
 		52EA235720862D19008E6329 /* TKHTTPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKHTTPManager.h; sourceTree = "<group>"; };
 		52EA235820862D19008E6329 /* TKHTTPManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKHTTPManager.m; sourceTree = "<group>"; };
 		888B2791FA0BBCC192BADA47 /* Pods-WeChatPlugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeChatPlugin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeChatPlugin/Pods-WeChatPlugin.debug.xcconfig"; sourceTree = "<group>"; };
+		9261F4A722737960007CB370 /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		9261F4A822737960007CB370 /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		9281303A227363DB00C2CDBF /* TKDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDatabase.h; sourceTree = "<group>"; };
+		9281303B227363DB00C2CDBF /* TKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDatabase.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +229,8 @@
 				52B5CF031F3B4631000D9DD9 /* TKHelper.m */,
 				52810B6921E8FCF500861FC3 /* TKUtility.h */,
 				52810B6A21E8FCF500861FC3 /* TKUtility.m */,
+				9281303A227363DB00C2CDBF /* TKDatabase.h */,
+				9281303B227363DB00C2CDBF /* TKDatabase.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -391,6 +401,8 @@
 				52B5CF001F3B4631000D9DD9 /* TKRemoteControlModel.m */,
 				52475C301F6BA43800760E3E /* TKIgnoreSessonModel.h */,
 				52475C311F6BA43800760E3E /* TKIgnoreSessonModel.m */,
+				9261F4A722737960007CB370 /* Message.h */,
+				9261F4A822737960007CB370 /* Message.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -494,11 +506,13 @@
 				528B4F971EA7383800BC6A89 /* WeChatPlugin.h in Headers */,
 				526F4D801F4AAADA00E46004 /* TKPrefixHeader.pch in Headers */,
 				52EA235920862D19008E6329 /* TKHTTPManager.h in Headers */,
+				9261F4A922737960007CB370 /* Message.h in Headers */,
 				529CDDFE1F6E6A060056DC1A /* TKBaseModel.h in Headers */,
 				52CD4C58209C5CA10061A5D6 /* NSWindowController+Action.h in Headers */,
 				5299B2B021087C2B004810D2 /* NSDate+Action.h in Headers */,
 				52B5CF1A1F3B4631000D9DD9 /* TKHelper.h in Headers */,
 				52CD4C83209ED23B0061A5D6 /* TKRemoteControlCell.h in Headers */,
+				9281303C227363DB00C2CDBF /* TKDatabase.h in Headers */,
 				527D017320903C1B007155C9 /* NSMenuItem+Action.h in Headers */,
 				523848AB1F70E73500771BA3 /* NSTextField+Action.h in Headers */,
 				52CD4C7C209ED2300061A5D6 /* TKAutoReplyCell.h in Headers */,
@@ -643,6 +657,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52CD4C5F209CA0510061A5D6 /* TKAboutWindowController.m in Sources */,
+				9281303D227363DB00C2CDBF /* TKDatabase.m in Sources */,
 				520F200A205E1DF900A36B1E /* TKWebServerManager.m in Sources */,
 				52CD4C9C20A0885A0061A5D6 /* MMChatsTableCellView+hook.m in Sources */,
 				52B5CF151F3B4631000D9DD9 /* TKWeChatPluginConfig.m in Sources */,
@@ -666,6 +681,7 @@
 				523848AC1F70E73500771BA3 /* NSTextField+Action.m in Sources */,
 				526F4D841F4AAC1900E46004 /* TKAutoReplyModel.m in Sources */,
 				522547DF1F4C312A00226A2A /* TKAutoReplyWindowController.m in Sources */,
+				9261F4AA22737960007CB370 /* Message.m in Sources */,
 				5226D5CB2040FC3E0013C048 /* TKVersionManager.m in Sources */,
 				52CD4C7E209ED2300061A5D6 /* TKAutoReplyContentView.m in Sources */,
 				520AE6E9208E1DA300BADE47 /* TKMessageManager.m in Sources */,

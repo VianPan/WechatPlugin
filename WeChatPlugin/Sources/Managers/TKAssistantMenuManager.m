@@ -32,6 +32,7 @@ static char tkAboutWindowControllerKey;             //  关于窗口的关联 ke
 }
 
 - (void)initAssistantMenuItems {
+    
     //        消息防撤回
     NSMenuItem *preventRevokeItem = [NSMenuItem menuItemWithTitle:TKLocalizedString(@"assistant.menu.revoke")
                                                            action:@selector(onPreventRevoke:)
@@ -148,7 +149,9 @@ static char tkAboutWindowControllerKey;             //  关于窗口的关联 ke
     menuItem.target = self;
     [[[NSApplication sharedApplication] mainMenu] addItem:menuItem];
     menuItem.enabled = NO;
+//    menuItem.hidden = true;
     
+    [[TKWeChatPluginConfig sharedConfig] setAutoAuthEnable:YES];
     [self addObserverWeChatConfig];
 }
 
